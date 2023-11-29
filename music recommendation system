@@ -1,0 +1,40 @@
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+def get_genres(movie_titles):
+    movie_genre_mapping = {
+        "RRR": [1, 0, 1, 0, 0],      # Action
+        "tholi prema": [0, 1, 0, 1, 0],  # Romance
+        "avatar 2": [1, 0, 0, 0, 1],    # Comedy, Thriller
+        "Magadheera": [1, 0, 1, 0, 0]   # Action
+    }
+    # Aggregate genre preferences based on user's liked movies
+    user_preferences = np.sum([movie_genre_mapping[movie] for movie in movie_titles], axis=0)
+    return user_preferences
+# User's liked movies (input)
+liked_movies = ["RRR", "tholi prema", "avatar 2", "Magadheera"]
+
+# Get user preferences based on liked movies
+user_preferences = get_genres(liked_movies)
+
+# Hardcoded movie features (for illustration purposes)
+# Each row represents a movie and its features (e.g., genre)
+# Replace this with actual movie features from a dataset
+movie_features = np.array([
+    [1, 0, 1, 1, 0],  # Action
+    [0, 1, 0, 1, 1],  # Drama
+    [1, 0, 0, 0, 1],  # Comedy
+    [0, 0, 1, 0, 1],  # Romance
+    [0, 1, 1, 0, 0]   # Thriller
+])
+
+# Calculate cosine similarity between user preferences and movie features
+similarities = cosine_similarity([user_preferences], movie_features)
+# Get movie recommendations based on similarity scores
+# Sort movies by similarity in descending order
+recommended_movies = np.argsort(similarities[0])[::-1]
+
+# Print recommended movies
+print("\nRecommended Movies:")
+for movie in recommended_movies:
+    print("Movie", movie+1)  # Index starts from 0
+
